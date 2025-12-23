@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D LA USA O CHINITO - Mega Catálogo de Importación</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #febd69;
+            --dark: #131921;
+        }
+        body {
+            background-color: #f3f3f7;
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .header-bg { background-color: var(--dark); }
+        
+        .category-card {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+        .category-card:active { transform: scale(0.95); }
+        .category-card:hover {
+            background-color: #fff;
+            border-color: #fb923c;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .chat-window {
+            display: none;
+            width: 340px;
+            max-height: 550px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        .chat-window.active { display: flex; }
+
+        .store-link {
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            transition: transform 0.2s;
+        }
+        .store-link:hover { transform: translateY(-2px); }
+
+        .btn-link-action {
+            animation: slideUp 0.4s ease-out forwards;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .mic-active {
+            animation: pulse-red 1.5s infinite;
+            background-color: #ef4444 !important;
+            color: white !important;
+        }
+
+        @keyframes pulse-red {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+
+        /* Estilo para los logos de las tiendas */
+        .store-logo-container {
+            background: white;
+            padding: 1rem;
+            border-radius: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100px;
+            width: 100%;
+            margin-bottom: 1.5rem;
+            box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.05);
+        }
+        .store-logo-img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body class="pb-24">
+
+    <header class="header-bg text-white p-4 sticky top-0 z-50 shadow-lg">
+        <div class="container mx-auto flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <button onclick="showHome()" class="bg-orange-400 text-black p-2.5 rounded-xl hover:bg-orange-500 transition shadow-md">
+                    <i class="fas fa-home"></i>
+                </button>
+                <div class="flex flex-col">
+                    <span class="text-lg font-black italic text-orange-400 leading-none uppercase tracking-tighter">D LA USA O CHINITO</span>
+                    <span class="text-[8px] font-bold text-gray-400 uppercase tracking-[0.2em]">Global Trading Assistant</span>
+                </div>
+            </div>
+            
+            <div class="flex flex-grow max-w-lg relative group">
+                <input type="text" id="searchInput" placeholder="¿Qué quieres importar hoy?..." class="w-full p-3 pl-5 rounded-full text-black outline-none text-sm border-2 border-transparent focus:border-orange-400 transition" onkeypress="if(event.key === 'Enter') performSearch()">
+                <button onclick="performSearch()" class="absolute right-2 top-1.5 bg-orange-400 p-2 px-4 rounded-full text-black hover:bg-orange-500 transition">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-6">
+        <nav id="breadcrumb" class="mb-6 text-[10px] font-bold uppercase tracking-widest text-gray-400 hidden items-center gap-1">
+            <span class="cursor-pointer hover:text-orange-500 transition" onclick="showHome()">INICIO</span>
+            <span id="breadcrumbContent" class="flex items-center gap-1"></span>
+        </nav>
+
+        <div id="homeView">
+            <div class="bg-gradient-to-br from-zinc-800 to-black p-8 rounded-[2.5rem] shadow-xl mb-12 text-white relative overflow-hidden border border-zinc-700">
+                <div class="relative z-10">
+                    <div class="bg-orange-400 text-black text-[9px] font-black px-3 py-1 rounded-full inline-block mb-4 uppercase">Directo de Fábrica</div>
+                    <h1 class="text-4xl font-black uppercase tracking-tighter leading-none mb-2">MEGA CATÁLOGO <br><span class="text-orange-400">IMPORTACIÓN</span></h1>
+                    <p class="text-zinc-400 text-xs font-medium max-w-sm mb-6 leading-relaxed">Conectamos tu negocio con los proveedores más grandes de Estados Unidos y China.</p>
+                    <button onclick="document.getElementById('searchInput').focus()" class="bg-white text-black text-[10px] font-black px-6 py-3 rounded-xl uppercase tracking-widest hover:bg-orange-400 transition">Explorar ahora</button>
+                </div>
+                <i class="fas fa-box-open absolute -right-6 -bottom-6 text-[12rem] text-white opacity-5 rotate-12"></i>
+            </div>
+
+            <h2 class="text-[11px] font-black mb-8 text-zinc-500 uppercase tracking-[0.3em] flex items-center gap-3">
+                <span class="w-12 h-[2px] bg-orange-400 rounded-full"></span> ELIGE TU SECTOR
+            </h2>
+            
+            <div id="mainCategoriesGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5"></div>
+        </div>
+
+        <div id="nestedView" class="hidden">
+            <div class="flex items-center gap-4 mb-8">
+                <button id="backBtn" class="bg-white text-zinc-400 hover:text-orange-500 transition w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm border border-zinc-100">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <div>
+                    <h2 id="nestedTitle" class="text-3xl font-black text-zinc-900 uppercase tracking-tighter leading-none">Categoría</h2>
+                    <p id="nestedSubtitle" class="text-[10px] text-orange-500 font-bold uppercase tracking-widest mt-1">D LA USA O CHINITO SELECCIÓN</p>
+                </div>
+            </div>
+            <div id="nestedGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        </div>
+
+        <div id="resultsView" class="hidden">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-10">
+                <div>
+                    <div class="bg-orange-100 text-orange-600 text-[9px] font-black px-3 py-1 rounded-full inline-block mb-2 uppercase tracking-widest">Resultados de búsqueda</div>
+                    <h2 id="resultsTitle" class="text-3xl font-black text-zinc-900 uppercase tracking-tighter">PRODUCTO</h2>
+                </div>
+                <button onclick="showHome()" class="bg-zinc-900 text-white px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-orange-500 transition shadow-lg">
+                    Nueva búsqueda
+                </button>
+            </div>
+            
+            <div id="resultsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+
+            <div class="mt-16 p-10 bg-white rounded-[3rem] border-2 border-dashed border-zinc-200 text-center">
+                <div class="w-20 h-20 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl">
+                    <i class="fab fa-whatsapp"></i>
+                </div>
+                <h3 class="text-xl font-black text-zinc-900 uppercase mb-2 tracking-tighter">¿Buscas una cotización formal?</h3>
+                <p class="text-sm text-zinc-500 mb-8 max-w-md mx-auto">Si eres mayorista o buscas maquinaria pesada, nuestro equipo técnico en **D LA USA O CHINITO** te ayuda con la logística en Colombia y el mundo.</p>
+                <a href="https://wa.me/573118824904" target="_blank" class="bg-green-500 text-white px-10 py-5 rounded-2xl font-black text-[11px] uppercase tracking-widest shadow-xl hover:bg-green-600 transition inline-block">
+                    Hablar con un asesor (Colombia)
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <div class="fixed bottom-6 right-6 z-[1000] flex flex-col items-end gap-3">
+        <div id="chatWindow" class="chat-window bg-white rounded-[2.5rem] flex-col border border-zinc-100 overflow-hidden mb-4">
+            <div class="bg-zinc-900 p-5 text-white flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                    <span class="text-[10px] font-black uppercase tracking-widest text-orange-400">Guía Chinito AI</span>
+                </div>
+                <button onclick="toggleChat()" class="text-zinc-500 hover:text-white transition"><i class="fas fa-times"></i></button>
+            </div>
+            <div id="chatBox" class="p-5 h-80 overflow-y-auto bg-zinc-50 flex flex-col gap-4 no-scrollbar"></div>
+            <div class="p-4 border-t bg-white flex flex-col gap-2">
+                <div class="flex gap-2">
+                    <button id="voiceBtn" onclick="toggleVoice()" class="bg-zinc-100 p-4 rounded-2xl text-zinc-600 hover:bg-zinc-200 transition">
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                    <input type="text" id="chatInput" placeholder="Busca un producto..." class="flex-grow bg-zinc-100 p-4 rounded-2xl text-[11px] outline-none focus:ring-2 focus:ring-orange-400 transition" onkeypress="if(event.key === 'Enter') sendChatMessage()">
+                    <button onclick="sendChatMessage()" class="bg-orange-400 p-4 rounded-2xl text-black shadow-md hover:bg-orange-500 transition">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <p id="voiceStatus" class="text-[9px] text-zinc-400 font-bold uppercase text-center hidden">Escuchando...</p>
+            </div>
+        </div>
+        <button onclick="toggleChat()" class="bg-zinc-900 w-16 h-16 rounded-3xl flex items-center justify-center text-orange-400 border-4 border-white shadow-2xl hover:scale-110 transition duration-300">
+            <i class="fas fa-robot text-2xl"></i>
+        </button>
+    </div>
+
+    <script>
+        const categoriesData = [
+            {
+                id: "tech", name: "Tecnología", icon: "fa-laptop", color: "blue",
+                subs: [
+                    { name: "Cómputo", items: ["Laptops Gamer", "Mini PCs", "Tarjetas RTX 4090", "Monitores 4K", "Procesadores"] },
+                    { name: "Móviles", items: ["iPhone 15/16 Pro", "Samsung S24", "Relojes Inteligentes", "Audífonos ANC"] },
+                    { name: "Gadgets", items: ["Drones DJI", "Cámaras Mirrorless", "VR Headsets", "Consolas Retro"] }
+                ]
+            },
+            {
+                id: "tools", name: "Herramientas", icon: "fa-tools", color: "orange",
+                subs: [
+                    { name: "Eléctricas", items: ["Taladros Brushless", "Sierras Inglete", "Esmeriles", "Rotomartillos"] },
+                    { name: "Mecánica", items: ["Scanners OBD2 Pro", "Llaves de Impacto", "Gatos Hidráulicos", "Torquímetros"] },
+                    { name: "Medición", items: ["Niveles Láser 360", "Cámaras Térmicas", "Multímetros", "Pie de Rey Digital"] }
+                ]
+            },
+            {
+                id: "home", name: "Hogar & Smart", icon: "fa-home", color: "emerald",
+                subs: [
+                    { name: "Cocina", items: ["Air Fryers Pro", "Cafeteras Espresso", "Licuadoras de Vacío", "Hornos de Convección"] },
+                    { name: "Limpieza", items: ["Robots Aspiradores", "Hidrolavadoras", "Mopas de Vapor", "Purificadores de Aire"] },
+                    { name: "Decoración", items: ["Lámparas Minimalistas", "Muebles Nórdicos", "Cuadros Digitales", "Humidificadores"] }
+                ]
+            },
+            {
+                id: "fashion", name: "Moda & Accesorios", icon: "fa-tshirt", color: "pink",
+                subs: [
+                    { name: "Calzado", items: ["Jordan/Nike Retro", "Zapatillas Running", "Botas Industriales", "Zapatos de Cuero"] },
+                    { name: "Accesorios", items: ["Gafas de Sol", "Relojes Automáticos", "Bolsos de Cuero", "Cinturones"] }
+                ]
+            },
+            {
+                id: "beauty", name: "Belleza & Salud", icon: "fa-spa", color: "purple",
+                subs: [
+                    { name: "Cuidado Personal", items: ["Afeitadoras Eléctricas", "Depiladoras Láser", "Secadores Iónicos"] },
+                    { name: "Fitness", items: ["Pistolas de Masaje", "Bandas Elásticas", "Pesas Ajustables", "Smart Bands"] }
+                ]
+            },
+            {
+                id: "pets", name: "Mascotas", icon: "fa-paw", color: "amber",
+                subs: [
+                    { name: "Accesorios", items: ["Camas Ortopédicas", "Arneses Tácticos", "Juguetes Inteligentes"] },
+                    { name: "Tecnología", items: ["Comederos Automáticos", "Fuentes de Agua", "GPS para Mascotas"] }
+                ]
+            },
+            {
+                id: "industry", name: "Maquinaria", icon: "fa-industry", color: "zinc",
+                subs: [
+                    { name: "Industrial", items: ["Cortadoras Láser CO2", "Impresoras 3D Industriales", "Máquinas CNC", "Empacadoras"] },
+                    { name: "Energía", items: ["Paneles Solares", "Generadores Eléctricos", "Inversores Híbridos"] }
+                ]
+            },
+            {
+                id: "babies", name: "Bebés & Niños", icon: "fa-baby", color: "cyan",
+                subs: [
+                    { name: "Seguridad", items: ["Monitores Bebé", "Cámaras WiFi", "Sillas de Auto"] },
+                    { name: "Aprendizaje", items: ["Juguetes Montessori", "Tablets Niños", "Kits de Ciencia"] }
+                ]
+            }
+        ];
+
+        let navigationStack = [];
+        let recognition;
+        let isListening = false;
+        let hasWelcomed = false;
+
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.lang = 'es-ES';
+            recognition.onstart = () => { isListening = true; document.getElementById('voiceBtn').classList.add('mic-active'); document.getElementById('voiceStatus').classList.remove('hidden'); };
+            recognition.onend = () => { isListening = false; document.getElementById('voiceBtn').classList.remove('mic-active'); document.getElementById('voiceStatus').classList.add('hidden'); };
+            recognition.onresult = (event) => { document.getElementById('chatInput').value = event.results[0][0].transcript; sendChatMessage(); };
+        }
+
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                
+                // Intentar buscar una voz de hombre amable
+                const voices = window.speechSynthesis.getVoices();
+                // Prioridad: Voces masculinas en español
+                const preferredVoice = voices.find(v => v.lang.includes('es') && (v.name.toLowerCase().includes('male') || v.name.toLowerCase().includes('david') || v.name.toLowerCase().includes('pablo'))) 
+                                       || voices.find(v => v.lang.includes('es'));
+                
+                if (preferredVoice) utterance.voice = preferredVoice;
+                
+                utterance.lang = 'es-ES';
+                utterance.rate = 0.9; // Un poco más lento para sonar más amable y pausado
+                utterance.pitch = 0.85; // Tono más grave para voz masculina
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function toggleVoice() {
+            if (!recognition) return;
+            isListening ? recognition.stop() : recognition.start();
+        }
+
+        function toggleChat() {
+            const chat = document.getElementById('chatWindow');
+            chat.classList.toggle('active');
+            if (chat.classList.contains('active') && !hasWelcomed) {
+                hasWelcomed = true;
+                const welcomeMsg = "Hola amigo, bienvenido a D LA USA O CHINITO. Soy tu asistente personal. ¿En qué puedo ayudarte hoy a importar desde China o Estados Unidos? Estoy aquí para servirte.";
+                const box = document.getElementById('chatBox');
+                box.innerHTML += `<div class="self-start bg-white p-4 rounded-2xl rounded-tl-none border border-zinc-100 text-[11px] text-zinc-600 shadow-sm">${welcomeMsg}</div>`;
+                speak(welcomeMsg);
+            }
+        }
+
+        function renderMainCategories() {
+            const grid = document.getElementById('mainCategoriesGrid');
+            grid.innerHTML = categoriesData.map(cat => `
+                <div onclick="openLevel1('${cat.id}')" class="category-card bg-white p-8 rounded-[2rem] border border-zinc-100 flex flex-col items-center text-center shadow-sm">
+                    <div class="w-16 h-16 bg-${cat.color}-50 text-${cat.color}-500 rounded-2xl flex items-center justify-center mb-5 text-2xl"><i class="fas ${cat.icon}"></i></div>
+                    <span class="font-black text-xs uppercase tracking-tight text-zinc-900">${cat.name}</span>
+                </div>
+            `).join('');
+        }
+
+        window.openLevel1 = (catId) => {
+            const cat = categoriesData.find(c => c.id === catId);
+            navigationStack = [{ view: 'home' }];
+            showNested(cat.name, "Sectores disponibles", cat.subs, (sub) => openLevel2(catId, sub.name));
+            updateBreadcrumb([cat.name]);
+        };
+
+        window.openLevel2 = (catId, subName) => {
+            const cat = categoriesData.find(c => c.id === catId);
+            const sub = cat.subs.find(s => s.name === subName);
+            navigationStack.push({ view: 'nested', catId: catId });
+            showNested(subName, "Modelos populares para importar", sub.items, (item) => generateDirectLinks(item));
+            updateBreadcrumb([cat.name, subName]);
+        };
+
+        function showNested(title, subtitle, items, onClickAction) {
+            document.getElementById('homeView').classList.add('hidden');
+            document.getElementById('resultsView').classList.add('hidden');
+            const view = document.getElementById('nestedView');
+            view.classList.remove('hidden');
+            document.getElementById('nestedTitle').innerText = title;
+            document.getElementById('nestedSubtitle').innerText = subtitle;
+            const grid = document.getElementById('nestedGrid');
+            grid.innerHTML = '';
+            items.forEach(item => {
+                const label = typeof item === 'string' ? item : item.name;
+                const btn = document.createElement('button');
+                btn.className = "bg-white p-6 rounded-2xl border border-zinc-100 text-left font-bold text-sm hover:border-orange-400 hover:bg-orange-50 transition flex justify-between items-center group shadow-sm";
+                btn.innerHTML = `<span>${label}</span> <i class="fas fa-chevron-right text-[10px] text-zinc-300 group-hover:text-orange-400 transition"></i>`;
+                btn.onclick = () => onClickAction(item);
+                grid.appendChild(btn);
+            });
+            document.getElementById('backBtn').onclick = () => {
+                const last = navigationStack.pop();
+                last.view === 'home' ? showHome() : openLevel1(last.catId);
+            };
+        }
+
+        window.generateDirectLinks = (query) => {
+            document.getElementById('homeView').classList.add('hidden');
+            document.getElementById('nestedView').classList.add('hidden');
+            const view = document.getElementById('resultsView');
+            view.classList.remove('hidden');
+            document.getElementById('resultsTitle').innerText = query.toUpperCase();
+            const grid = document.getElementById('resultsGrid');
+            const encoded = encodeURIComponent(query);
+            
+            const stores = [
+                { name: "Google", logo: "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png", url: `https://www.google.com/search?q=${encoded}`, color: "bg-white border-2 border-zinc-200", desc: "Resultados generales en la web", icon: "🌐" },
+                { name: "Amazon", logo: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg", url: `https://www.amazon.com/s?k=${encoded}`, color: "bg-zinc-900", desc: "Calidad y garantía USA", icon: "🇺🇸" },
+                { name: "Walmart", logo: "https://upload.wikimedia.org/wikipedia/commons/1/12/Walmart_logo.svg", url: `https://www.walmart.com/search?q=${encoded}`, color: "bg-blue-600", desc: "Precios bajos todos los días", icon: "🇺🇸" },
+                { name: "Alibaba", logo: "https://upload.wikimedia.org/wikipedia/commons/d/d7/Alibaba.com_logo.png", url: `https://www.alibaba.com/trade/search?SearchText=${encoded}`, color: "bg-orange-600", desc: "Precios de fábrica mayorista", icon: "🇨🇳" },
+                { name: "Aliexpress", logo: "https://upload.wikimedia.org/wikipedia/commons/3/3b/AliExpress_logo.svg", url: `https://www.aliexpress.com/wholesale?SearchText=${encoded}`, color: "bg-red-500", desc: "Venta minorista directa", icon: "🇨🇳" },
+                { name: "Costco", logo: "https://upload.wikimedia.org/wikipedia/commons/5/59/Costco_Wholesale_logo_2010-10-26.svg", url: `https://www.costco.com/CatalogSearch?keyword=${encoded}`, color: "bg-red-700", desc: "Compras por volumen", icon: "🇺🇸" },
+                { name: "Best Buy", logo: "https://upload.wikimedia.org/wikipedia/commons/f/f5/Best_Buy_Logo.svg", url: `https://www.bestbuy.com/site/searchpage.jsp?st=${encoded}`, color: "bg-yellow-400", desc: "Líder en electrónica", icon: "🇺🇸" },
+                { name: "eBay", logo: "https://upload.wikimedia.org/wikipedia/commons/1/1b/EBay_logo.svg", url: `https://www.ebay.com/sch/i.html?_nkw=${encoded}`, color: "bg-blue-500", desc: "Subastas y repuestos", icon: "🇺🇸" },
+                { name: "Temu", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Temu_logo.svg/2560px-Temu_logo.svg.png", url: `https://www.temu.com/search_result.html?search_key=${encoded}`, color: "bg-orange-500", desc: "Tendencias virales económicas", icon: "🇨🇳" },
+                { name: "Shein", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/SHEIN_Logo.svg/2560px-SHEIN_Logo.svg.png", url: `https://www.shein.com/pdsearch/${encoded}`, color: "bg-black", desc: "Moda ultra rápida", icon: "🇨🇳" }
+            ];
+
+            grid.innerHTML = stores.map(store => `
+                <div class="bg-white p-6 rounded-[2.5rem] border border-zinc-100 text-center btn-link-action shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="store-logo-container">
+                            <img src="${store.logo}" alt="${store.name}" class="store-logo-img">
+                        </div>
+                        <h3 class="font-black text-zinc-900 mb-2 uppercase tracking-tight text-sm">${store.name}</h3>
+                        <p class="text-[10px] text-zinc-400 mb-6 font-medium">${store.desc}</p>
+                    </div>
+                    <a href="${store.url}" target="_blank" class="store-link w-full ${store.color} ${(store.name === 'Best Buy' || store.name === 'Google') ? 'text-black' : 'text-white'} py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg">BUSCAR EN ${store.name.toUpperCase()}</a>
+                </div>
+            `).join('');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        window.showHome = () => {
+            document.getElementById('homeView').classList.remove('hidden');
+            document.getElementById('nestedView').classList.add('hidden');
+            document.getElementById('resultsView').classList.add('hidden');
+            document.getElementById('breadcrumb').classList.add('hidden');
+            navigationStack = [];
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        function updateBreadcrumb(parts) {
+            const nav = document.getElementById('breadcrumb');
+            nav.classList.add('flex'); nav.classList.remove('hidden');
+            document.getElementById('breadcrumbContent').innerHTML = parts.map(p => ` <i class="fas fa-chevron-right text-[7px] mx-1"></i> <span>${p}</span>`).join('');
+        }
+
+        window.sendChatMessage = () => {
+            const input = document.getElementById('chatInput');
+            if(!input.value) return;
+            const val = input.value;
+            const box = document.getElementById('chatBox');
+            box.innerHTML += `<div class="self-end bg-orange-400 p-4 rounded-2xl rounded-tr-none text-[11px] font-black shadow-sm text-black">${val}</div>`;
+            input.value = '';
+            const responseText = `¡Qué buena búsqueda! He mirado en todo el mundo y aquí tienes las mejores opciones para ${val}. Si necesitas ayuda con el flete a Colombia, cuenta conmigo amigo.`;
+            setTimeout(() => {
+                box.innerHTML += `<div class="self-start bg-white p-4 rounded-2xl rounded-tl-none border border-zinc-100 text-[11px] text-zinc-600 shadow-sm">${responseText}</div>`;
+                generateDirectLinks(val);
+                speak(responseText);
+                box.scrollTop = box.scrollHeight;
+            }, 600);
+        };
+
+        window.performSearch = () => {
+            const q = document.getElementById('searchInput').value;
+            if (q) generateDirectLinks(q);
+        };
+
+        // Cargar voces al inicio para evitar esperas
+        window.speechSynthesis.onvoiceschanged = () => {
+            window.speechSynthesis.getVoices();
+        };
+
+        renderMainCategories();
+    </script>
+</body>
+</html>
